@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Digify.Events
+{
+    public interface IEventBusState
+    {
+        ConcurrentDictionary<string, ConcurrentBag<Func<IServiceProvider, IDictionary<string, object>, Task>>> Subscribers { get; }
+
+        void Add(string message, Func<IServiceProvider, IDictionary<string, object>, Task> action);
+    }
+}
