@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Digify.DependecyInjection" Version="0.0.2-preview1" />
+    <PackageReference Include="System.Reflection.DispatchProxy" Version="4.7.1" />
   </ItemGroup>
 
 </Project>
