@@ -19,10 +19,6 @@ namespace Digify.Events
             _state = state;
             _serviceProvider = serviceProvider;
         }
-        public async Task ExecuteAsync(string message, IDictionary<string, object> arguments)
-        {
-            await NotifyAsync(message, arguments);
-        }
         public async Task NotifyAsync(string message, IDictionary<string, object> arguments)
         {
             var messageSubscribers = _state.Subscribers.GetOrAdd(message, m => new ConcurrentBag<Func<IServiceProvider, IDictionary<string, object>, Task>>());

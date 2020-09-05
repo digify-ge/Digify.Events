@@ -11,16 +11,11 @@ namespace Digify.Events
     public interface IEventBus
     {
         Task NotifyAsync(string message, IDictionary<string, object> arguments);
-        Task ExecuteAsync(string message, IDictionary<string, object> arguments);
         void Subscribe(string message, Func<IServiceProvider, IDictionary<string, object>, Task> action);
     }
 
     public static class EventBusExtensions
     {
-        public static void Execute<TEventHandler>(this IEventBus eventBus, Expression<Action<TEventHandler>> eventHandler) where TEventHandler : IEventHandler
-        {
-            Notify(eventBus, eventHandler);
-        }
         public static void Notify<TEventHandler>(this IEventBus eventBus, Expression<Action<TEventHandler>> eventHandler) where TEventHandler : IEventHandler
         {
             var expression = eventHandler.Body as MethodCallExpression;
@@ -44,10 +39,6 @@ namespace Digify.Events
                 .ToDictionary(kv => kv.Name, kv => kv.Value);
 
             eventBus.NotifyAsync(messageName, data).Wait();
-        }
-        public static Task ExecuteAsync<TEventHandler>(this IEventBus eventBus, Expression<Func<TEventHandler, Task>> eventHandler) where TEventHandler : IEventHandler
-        {
-            return NotifyAsync(eventBus, eventHandler);
         }
         public static Task NotifyAsync<TEventHandler>(this IEventBus eventBus, Expression<Func<TEventHandler, Task>> eventHandler) where TEventHandler : IEventHandler
         {
